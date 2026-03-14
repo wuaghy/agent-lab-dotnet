@@ -1,26 +1,41 @@
-<div class="flex flex-col items-center justify-center min-h-full p-6 bg-gray-50">
-    <div class="text-center max-w-sm">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Soc Ops</h1>
-        <p class="text-lg text-gray-600 mb-8">Social Bingo</p>
+@using SocOps.Models
 
-        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
-            <h2 class="font-semibold text-gray-800 mb-3">How to play</h2>
-            <ul class="text-left text-gray-600 text-sm space-y-2">
-                <li>• Find people who match the questions</li>
-                <li>• Tap a square when you find a match</li>
-                <li>• Get 5 in a row to win!</li>
-            </ul>
+<div class="flex flex-col items-center justify-center min-h-full p-6">
+    <div class="text-center max-w-sm">
+        <h1 class="text-5xl font-bold neon-text font-display mb-2 glitch" data-text="SOC OPS">SOC OPS</h1>
+        <p class="text-xl text-cyan uppercase tracking-wider mb-8">// Social Bingo</p>
+
+        <div class="bg-card rounded-lg p-6 neon-border mb-8">
+            <h2 class="font-semibold text-cyan font-display uppercase tracking-wider mb-4">[ SELECT MODE ]</h2>
+            <div class="space-y-3">
+                <button
+                    @onclick="() => OnModeSelected.InvokeAsync(GameMode.Bingo)"
+                    class="cyber-button w-full text-sm">
+                    &lt; BINGO /&gt;
+                    <span class="block text-xs opacity-70 mt-1">5x5 grid • Get 5 in a row</span>
+                </button>
+
+                <button
+                    @onclick="() => OnModeSelected.InvokeAsync(GameMode.ScavengerHunt)"
+                    class="cyber-button w-full text-sm">
+                    &lt; SCAVENGER HUNT /&gt;
+                    <span class="block text-xs opacity-70 mt-1">Checklist • Complete all tasks</span>
+                </button>
+
+                <button
+                    @onclick="() => OnModeSelected.InvokeAsync(GameMode.CardDeck)"
+                    class="cyber-button w-full text-sm">
+                    &lt; CARD DECK /&gt;
+                    <span class="block text-xs opacity-70 mt-1">Random cards • Swipe to match</span>
+                </button>
+            </div>
         </div>
 
-        <button
-            @onclick="OnStart"
-            class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors">
-            Start Game
-        </button>
+        <p class="text-xs text-gray-500 font-display">SYSTEM v3.0 // READY</p>
     </div>
 </div>
 
 @code {
     [Parameter]
-    public EventCallback OnStart { get; set; }
+    public EventCallback<GameMode> OnModeSelected { get; set; }
 }

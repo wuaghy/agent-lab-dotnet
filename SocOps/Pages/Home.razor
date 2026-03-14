@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using SocOps.Models
 @using SocOps.Services
+@using SocOps.Components
 @inject BingoGameService GameService
 @implements IDisposable
 
@@ -8,7 +9,15 @@
 
 @if (GameService.CurrentGameState == GameState.Start)
 {
-    <StartScreen OnStart="@GameService.StartGame" />
+    <StartScreen OnModeSelected="@HandleModeSelected" />
+}
+else if (GameService.CurrentGameState == GameState.ScavengerHunt)
+{
+    <ScavengerHunt OnBack="@GameService.ResetGame" />
+}
+else if (GameService.CurrentGameState == GameState.CardDeck)
+{
+    <CardDeck OnBack="@GameService.ResetGame" />
 }
 else
 {
@@ -30,6 +39,11 @@ else
     {
         await GameService.InitializeAsync();
         GameService.OnStateChanged += StateHasChanged;
+    }
+
+    private void HandleModeSelected(GameMode mode)
+    {
+        GameService.StartGame(mode);
     }
 
     public void Dispose()
