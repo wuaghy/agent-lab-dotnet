@@ -7,11 +7,12 @@ namespace SocOps.Services;
 public class BingoGameService
 {
     private const string STORAGE_KEY = "bingo-game-state";
-    private const int STORAGE_VERSION = 1;
+    private const int STORAGE_VERSION = 2;
 
     private readonly IJSRuntime _jsRuntime;
 
     public GameState CurrentGameState { get; private set; } = GameState.Start;
+    public GameMode CurrentGameMode { get; private set; } = GameMode.Bingo;
     public List<BingoSquareData> Board { get; private set; } = new();
     public BingoLine? WinningLine { get; private set; }
     public HashSet<int> WinningSquareIds => BingoLogicService.GetWinningSquareIds(WinningLine);
@@ -29,13 +30,27 @@ public class BingoGameService
         await LoadGameStateAsync();
     }
 
-    public void StartGame()
+    public void StartGame(GameMode mode = GameMode.Bingo)
     {
-        Board = BingoLogicService.GenerateBoard();
-        WinningLine = null;
-        CurrentGameState = GameState.Playing;
+        CurrentGameMode = mode;
+
+        if (mode == GameMode.Bingo)
+        {
+            Board = BingoLogicService.GenerateBoard();
+            WinningLine = null;
+            CurrentGameState = GameState.Playing;
+        }
+        else if (mode == GameMode.ScavengerHunt)
+        {
+            CurrentGameState = GameState.ScavengerHunt;
+        }
+        else if (mode == GameMode.CardDeck)
+        {
+            CurrentGameState = GameState.CardDeck;
+        }
+
         ShowBingoModal = false;
-        _ = SaveGameStateAsync(); // Fire and forget
+        _ = SaveGameStateAsync();
         NotifyStateChanged();
     }
 
@@ -88,6 +103,7 @@ public class BingoGameService
                 if (data != null && data.Version == STORAGE_VERSION)
                 {
                     CurrentGameState = data.GameState;
+                    CurrentGameMode = data.GameMode;
                     Board = data.Board;
                     WinningLine = data.WinningLine;
                 }
@@ -107,6 +123,7 @@ public class BingoGameService
             {
                 Version = STORAGE_VERSION,
                 GameState = CurrentGameState,
+                GameMode = CurrentGameMode,
                 Board = Board,
                 WinningLine = WinningLine
             };
@@ -123,6 +140,7 @@ public class BingoGameService
     {
         public int Version { get; set; }
         public GameState GameState { get; set; }
+        public GameMode GameMode { get; set; }
         public List<BingoSquareData> Board { get; set; } = new();
         public BingoLine? WinningLine { get; set; }
     }

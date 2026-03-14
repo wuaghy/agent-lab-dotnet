@@ -4,5 +4,14 @@ public enum GameState
 {
     Start,
     Playing,
-    Bingo
+    Bingo,
+    ScavengerHunt,
+    CardDeck
+}
+
+public enum GameMode
+{
+    Bingo,
+    ScavengerHunt,
+    CardDeck
 }
