@@ -22,45 +22,34 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-          include-prerelease: true
-      
-      - name: Build Blazor App
-        run: |
-          cd SocOps
-          dotnet publish -c Release -o ../publish
-      
+
+      - name: Restore dependencies
+        run: dotnet restore SocOps/SocOps.csproj
+
+      - name: Build
+        run: dotnet publish SocOps/SocOps.csproj -c Release -o release --nologo
+
       - name: Prepare deployment
         run: |
-          # Create _site directory
-          mkdir -p ./_site/app
-          
-          # Copy docs (workshop walkthrough) to root
-          cp -r docs/* ./_site/
-          
-          # Copy Blazor app output to /app subdirectory
-          cp -r publish/wwwroot/* ./_site/app/
-          
-          # Fix base href for GitHub Pages subdirectory
-          sed -i 's|<base href="/" />|<base href="/agent-lab-dotnet/app/" />|g' ./_site/app/index.html
-          
-          # Prevent Jekyll processing
-          touch ./_site/.nojekyll
+          # Fix base href for GitHub Pages
+          sed -i 's|<base href="/" />|<base href="/${{ github.event.repository.name }}/" />|g' release/wwwroot/index.html
 
           # Copy index.html as 404.html for SPA routing on refresh
-          # GitHub Pages serves 404.html on missing paths, Blazor router handles the URL
-          cp ./_site/app/index.html ./_site/404.html
-      
+          cp release/wwwroot/index.html release/wwwroot/404.html
+
+          # Prevent Jekyll processing (so _framework dir is served)
+          touch release/wwwroot/.nojekyll
+
       - uses: actions/configure-pages@v4
-      
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
-      
+          path: release/wwwroot
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
