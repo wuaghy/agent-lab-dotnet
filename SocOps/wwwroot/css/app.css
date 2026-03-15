@@ -5,9 +5,25 @@ body,
     margin: 0;
 }
 
+/* ── Cozy Coffee Shop theme ─────────────────────────────────────────────── */
+:root {
+    --espresso:  #2c1a0e;
+    --coffee:    #5c3317;
+    --latte:     #c49a6c;
+    --caramel:   #d4823a;
+    --cream:     #faf3e8;
+    --paper:     #f0e6d3;
+    --foam:      #fdf8f0;
+    --cinnamon:  #a0522d;
+    --gold:      #e8a628;
+}
+
 body {
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
+    background-color: var(--cream);
+    background-image: radial-gradient(circle at 20% 50%, rgba(196, 154, 108, 0.08) 0%, transparent 60%),
+                      radial-gradient(circle at 80% 20%, rgba(212, 130, 58, 0.06) 0%, transparent 50%);
 }
 
 /* Tailwind-like utility classes */
@@ -55,7 +71,7 @@ body {
 .bg-gray-100 { background-color: #f3f4f6; }
 .bg-amber-100 { background-color: #fef3c7; }
 .bg-amber-200 { background-color: #fde68a; }
-.bg-accent { background-color: #2563eb; }
+.bg-accent { background-color: var(--caramel); }
 .bg-marked { background-color: #dcfce7; }
 .bg-black\/50 { background-color: rgba(0, 0, 0, 0.5); }
 
@@ -160,6 +176,92 @@ button:disabled {
 
 .animate-\[bounce_0\.5s_ease-out\] {
     animation: bounce 0.5s ease-out;
+}
+
+/* ── Coffee Shop utility classes ─────────────────────────────────────────── */
+
+/* Backgrounds */
+.bg-cream   { background-color: var(--cream); }
+.bg-paper   { background-color: var(--paper); }
+.bg-foam    { background-color: var(--foam); }
+.bg-caramel { background-color: var(--caramel); }
+.bg-gold    { background-color: var(--gold); }
+.bg-coffee  { background-color: var(--coffee); }
+.bg-espresso { background-color: var(--espresso); }
+.bg-espresso\/70 { background-color: rgba(44, 26, 14, 0.7); }
+
+/* Text */
+.text-espresso { color: var(--espresso); }
+.text-coffee   { color: var(--coffee); }
+.text-latte    { color: var(--latte); }
+.text-caramel  { color: var(--caramel); }
+.text-foam     { color: var(--foam); }
+
+/* Borders */
+.border-latte    { border-color: var(--latte); }
+.border-caramel  { border-color: var(--caramel); }
+.border-cinnamon { border-color: var(--cinnamon); }
+
+/* Typography */
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+/* Component utilities */
+.card-cozy {
+    background-color: var(--paper);
+    border: 1px solid var(--latte);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(92, 51, 23, 0.1), 0 1px 2px rgba(92, 51, 23, 0.06);
+}
+
+.header-cozy {
+    background-color: var(--foam);
+    border-bottom: 1px solid var(--latte);
+    box-shadow: 0 1px 4px rgba(92, 51, 23, 0.08);
+}
+
+.btn-primary {
+    background-color: var(--caramel);
+    color: var(--foam);
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    transition: background-color 150ms ease, transform 80ms ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:active {
+    background-color: var(--cinnamon);
+    transform: scale(0.98);
+}
+
+/* Hover utilities (applied when button wraps content) */
+.hover-bg-foam:hover { background-color: var(--foam); }
+
+/* Steam animation for decorative use */
+@keyframes steam {
+    0%   { opacity: 0.6; transform: translateY(0) scaleX(1); }
+    50%  { opacity: 0.3; transform: translateY(-6px) scaleX(1.1); }
+    100% { opacity: 0;   transform: translateY(-12px) scaleX(0.9); }
+}
+
+.animate-steam-1 { animation: steam 2s ease-out infinite; }
+.animate-steam-2 { animation: steam 2s ease-out 0.6s infinite; }
+.animate-steam-3 { animation: steam 2s ease-out 1.2s infinite; }
+
+.steam-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+    height: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.steam-line {
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to top, var(--latte), transparent);
+    border-radius: 2px;
 }
 
 #blazor-error-ui {
