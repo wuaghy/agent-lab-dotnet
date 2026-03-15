@@ -51,8 +51,9 @@ jobs:
           # Prevent Jekyll processing
           touch ./_site/.nojekyll
 
-          # Copy 404.html to site root for SPA routing on refresh
-          cp ./_site/app/404.html ./_site/404.html
+          # Copy index.html as 404.html for SPA routing on refresh
+          # GitHub Pages serves 404.html on missing paths, Blazor router handles the URL
+          cp ./_site/app/index.html ./_site/404.html
       
       - uses: actions/configure-pages@v4
       
