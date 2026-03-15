@@ -50,6 +50,9 @@ jobs:
           
           # Prevent Jekyll processing
           touch ./_site/.nojekyll
+
+          # Copy 404.html to site root for SPA routing on refresh
+          cp ./_site/app/404.html ./_site/404.html
       
       - uses: actions/configure-pages@v4
       
